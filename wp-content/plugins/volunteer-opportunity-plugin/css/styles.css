@@ -1,0 +1,28 @@
+.volunteer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.volunteer-table th, .volunteer-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.volunteer-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.volunteer-table tr.green {
+    background-color: #d4edda; /* Light green */
+}
+
+.volunteer-table tr.yellow {
+    background-color: #fff3cd; /* Light yellow */
+}
+
+.volunteer-table tr.red {
+    background-color: #f8d7da; /* Light red */
+}
