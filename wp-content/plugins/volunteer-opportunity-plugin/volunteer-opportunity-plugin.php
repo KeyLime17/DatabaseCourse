@@ -52,12 +52,12 @@ function volunteer_opportunity_plugin_menu() {
         20
     );
 }
-
+// Add  volunteer to admin page handling
 function volunteer_opportunity_plugin_admin_page() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'volunteer_opportunities';
 
-    if ($_POST['action'] == 'add_volunteer' {
+    if ($_POST['action'] == 'add_volunteer') {
         $position = sanitize_text_field($_POST['position']);
         $organization = sanitize_text_field($_POST['organization']);
         $type = sanitize_text_field($_POST['type']);
@@ -67,9 +67,7 @@ function volunteer_opportunity_plugin_admin_page() {
         $hours = sanitize_text_field($_POST['hours']);
         $skills_required = sanitize_text_field($_POST['skills_required']);
 
-        $wpdb->insert(
-            $table_name,
-            array(
+        $wpdb->insert($table_name, [
                 'position' => $position,
                 'organization' => $organization,
                 'type' => $type,
@@ -78,8 +76,58 @@ function volunteer_opportunity_plugin_admin_page() {
                 'location' => $location,
                 'hours' => $hours,
                 'skills_required' => $skills_required
-            )
-        );
-    })
+        ]);
+        echo '<div class"updated"><p><strong>Volunteer opportunity added!</strong></p></div>';
+    }
+
+// Fetch all opportunities for display
+    $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
+    
+    //HTML
+    echo '<div class="wrap">';
+    echo '<h1>Manage Volunteer Opportunities</h1>';
+    echo '<form method="POST">';
+    echo '<input type="hidden" name="action" value="add_volunteer">';
+    echo '<table class="form-table">';
+    echo '<tr><th>Position</th><td><input type="text" name="position" required></td></tr>';
+    echo '<tr><th>Organization</th><td><input type="text" name="organization" required></td></tr>';
+    echo '<tr><th>Type</th><td><select name="type">
+        <option value="one-time">One-Time</option>
+        <option value="recurring">Recurring</option>
+        <option value="seasonal">Seasonal</option>
+        </select></td></tr>';
+    echo '<tr><th>Email</th><td><input type="email" name="email" required></td></tr>';
+    echo '<tr><th>Description</th><td><textarea name="description" required></textarea></td></tr>';
+    echo '<tr><th>Location</th><td><input type="text" name="location" required></td></tr>';
+    echo '<tr><th>Hours</th><td><input type="number" name="hours" min="1" required></td></tr>';
+    echo '<tr><th>Skills Required</th><td><input type="text" name="skills"></td></tr>';
+    echo '</table>';
+    echo '<input type="submit" class="button button-primary" value="Add Opportunity">';
+    echo '</form>';
+    
+    echo '<h2>All Volunteer Opportunities</h2>';
+
+    if ($opportunities) {
+        echo '<table class="wp-list-table widefat fixed striped">';
+        echo '<thead><tr><th>Position</th><th>Organization</th><th>Type</th><th>Email</th><th>Location</th><th>Hours</th><th>Actions</th></tr></thead><tbody>';
+        foreach ($opportunities as $opportunity) {
+            echo '<tr>';
+            echo '<td>' . esc_html($opportunity->position) . '</td>';
+            echo '<td>' . esc_html($opportunity->organization) . '</td>';
+            echo '<td>' . esc_html($opportunity->type) . '</td>';
+            echo '<td>' . esc_html($opportunity->email) . '</td>';
+            echo '<td>' . esc_html($opportunity->location) . '</td>';
+            echo '<td>' . intval($opportunity->hours) . '</td>';
+            echo '<td>
+                <a href="?page=volunteer-opportunities&action=delete&id=' . intval($opportunity->id) . '" class="button button-danger">Delete</a>
+            </td>';
+            echo '</tr>';
+        }
+        echo '</tbody></table>';
+    } else {
+        echo '<p>No volunteer opportunities found.</p>';
+    }
+    echo '</div>';
 }
+
 ?>
