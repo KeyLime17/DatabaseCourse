@@ -182,43 +182,50 @@ function volunteer_opportunity_shortcode($atts) {
 
     //HTML output
     ob_start();
-    echo '<table class="volunteer-table">';
-    echo '<thead><tr>';
-    echo '<th>Position</th><th>Organization</th><th>Type</th><th>Email</th>';
-    echo '<th>Description</th><th>Location</th><th>Hours</th><th>Skills Required</th>';
-    echo '</tr></thead><tbody>';
 
-    
-    foreach ($opportunities as $opportunity) {
-        // Set row background color based on hours (if no parameters are passed)
-        $row_class = '';
-        if (!$atts['hours'] && !$atts['type']) {
-            if ($opportunity->hours < 10) {
-                $row_class = 'green';
-            } elseif ($opportunity->hours <= 100) {
-                $row_class = 'yellow';
-            } else {
-                $row_class = 'red';
+
+    if (empty($opportunities)) {
+        // Display message if no results
+        echo '<p>No volunteer opportunities found.</p>';
+    } else {
+        // Display table with results
+        echo '<table class="volunteer-table">';
+        echo '<thead><tr>';
+        echo '<th>Position</th><th>Organization</th><th>Type</th><th>Email</th>';
+        echo '<th>Description</th><th>Location</th><th>Hours</th><th>Skills Required</th>';
+        echo '</tr></thead><tbody>';
+
+        foreach ($opportunities as $opportunity) {
+            // Set row background color based on hours (if no parameters are passed)
+            $row_class = '';
+            if (!$atts['hours'] && !$atts['type']) {
+                if ($opportunity->hours < 10) {
+                    $row_class = 'green';
+                } elseif ($opportunity->hours <= 100) {
+                    $row_class = 'yellow';
+                } else {
+                    $row_class = 'red';
+                }
             }
+
+            // Display each row
+            echo "<tr class='$row_class'>";
+            echo '<td>' . esc_html($opportunity->position) . '</td>';
+            echo '<td>' . esc_html($opportunity->organization) . '</td>';
+            echo '<td>' . esc_html($opportunity->type) . '</td>';
+            echo '<td>' . esc_html($opportunity->email) . '</td>';
+            echo '<td>' . esc_html($opportunity->description) . '</td>';
+            echo '<td>' . esc_html($opportunity->location) . '</td>';
+            echo '<td>' . intval($opportunity->hours) . '</td>';
+            echo '<td>' . esc_html($opportunity->skills_required) . '</td>';
+            echo '</tr>';
         }
-        // Display each row
-        echo "<tr class='$row_class'>";
-        echo '<td>' . esc_html($opportunity->position) . '</td>';
-        echo '<td>' . esc_html($opportunity->organization) . '</td>';
-        echo '<td>' . esc_html($opportunity->type) . '</td>';
-        echo '<td>' . esc_html($opportunity->email) . '</td>';
-        echo '<td>' . esc_html($opportunity->description) . '</td>';
-        echo '<td>' . esc_html($opportunity->location) . '</td>';
-        echo '<td>' . intval($opportunity->hours) . '</td>';
-        echo '<td>' . esc_html($opportunity->skills_required) . '</td>';
-        echo '</tr>';
+
+        echo '</tbody></table>';
     }
 
-    echo '</tbody></table>';
-
+    // Return the buffered content
     return ob_get_clean();
-} else {
-    echo '<p>No volunteer opportunities found.</p>';
 }
 
 add_action('wp_enqueue_scripts', 'volunteer_plugin_enqueue_styles');
