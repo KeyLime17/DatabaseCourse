@@ -1,18 +1,26 @@
 .volunteer-table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-.volunteer-table th, .volunteer-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border-collapse: collapse; /* Ensures clean, connected borders */
+    margin: 20px 0; /* Adds space above and below the table */
+    font-size: 14px; /* Adjust font size for readability */
     text-align: left;
 }
 
 .volunteer-table th {
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Light background for header */
     font-weight: bold;
+    border-bottom: 2px solid #ddd; /* Strong border below the header */
+    padding: 10px;
+}
+
+.volunteer-table td {
+    border-top: 1px solid #ddd; /* Border above each cell */
+    border-bottom: 1px solid #ddd; /* Border below each cell */
+    padding: 8px; /* Adds space inside cells */
+}
+
+.volunteer-table tr:hover {
+    background-color: #f9f9f9; /* Light gray background on hover */
 }
 
 .volunteer-table tr.green {
