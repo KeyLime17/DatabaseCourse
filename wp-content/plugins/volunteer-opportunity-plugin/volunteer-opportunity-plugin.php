@@ -131,16 +131,15 @@ function volunteer_opportunity_plugin_admin_page() {
 }
 
 //Delete opportunity
-if ($_GET['action'] == 'delete' && isset($_GET['id'])) {
-    global $wpdb; 
-    $table_name = $wpdb->prefix . 'volunteer_opportunities'; 
-    $id = intval($_GET['id']); 
-    $wpdb->delete($table_name, ['id' => $id]); 
-    echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>'; 
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $wpdb->delete($table_name, ['id' => $id]);
+    echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>';
 }
 
+
 //Shortcode
-add_shortcode('volunteer_opportunities', 'volunteer_opportunity_shortcode');
+add_shortcode('volunteer', 'volunteer_opportunity_shortcode');
 
 function volunteer_opportunity_shortcode($atts) {
     global $wpdb;
