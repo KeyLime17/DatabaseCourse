@@ -126,6 +126,7 @@ function volunteer_opportunity_plugin_admin_page() {
             echo '<td>' . esc_html($opportunity->email) . '</td>';
             echo '<td>' . esc_html($opportunity->location) . '</td>';
             echo '<td>' . intval($opportunity->hours) . '</td>';
+            echo '<td>' . esc_html($opportunity->skills_required) . '</td>';
             echo '<td>
                 <a href="?page=volunteer-opportunities&action=delete&id=' . intval($opportunity->id) . '" class="button button-danger">Delete</a>
             </td>';
