@@ -217,6 +217,8 @@ function volunteer_opportunity_shortcode($atts) {
     echo '</tbody></table>';
 
     return ob_get_clean();
+} else {
+    echo '<p>No volunteer opportunities found.</p>';
 }
 
 add_action('wp_enqueue_scripts', 'volunteer_plugin_enqueue_styles');
