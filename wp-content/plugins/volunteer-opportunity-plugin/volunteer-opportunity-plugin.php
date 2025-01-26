@@ -139,4 +139,72 @@ if ($_GET['action'] == 'delete' && isset($_GET['id'])) {
     echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>'; 
 }
 
+//Shortcode
+add_shortcode('volunteer_opportunities', 'volunteer_opportunity_shortcode');
+
+function volunteer_opportunity_shortcode($atts) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'volunteer_opportunities';
+
+    $atts = shortcode_atts(
+        [
+            'hours' => null, // Filter by hours
+            'type' => null, // Filter by type
+        ],
+        $atts
+    );
+
+    //SQL
+    $query = "SELECT * FROM $table_name WHERE 1=1";
+
+    if ($atts['hours']) {
+        $query .= $wpdb->prepare(" AND hours < %d", intval($atts['hours']));
+    }
+
+    if ($atts['type']) {
+        $query .= $wpdb->prepare(" AND type = %s", sanitize_text_field($atts['type']));
+    }
+
+    //Fetch results
+    $opportunities = $wpdb->get_results($query);
+
+    //HTML output
+    ob_start();
+    echo '<table class="volunteer-table">';
+    echo '<thead><tr>';
+    echo '<th>Position</th><th>Organization</th><th>Type</th><th>Email</th>';
+    echo '<th>Description</th><th>Location</th><th>Hours</th><th>Skills Required</th>';
+    echo '</tr></thead><tbody>';
+
+    
+    foreach ($opportunities as $opportunity) {
+        // Set row background color based on hours (if no parameters are passed)
+        $row_class = '';
+        if (!$atts['hours'] && !$atts['type']) {
+            if ($opportunity->hours < 10) {
+                $row_class = 'green';
+            } elseif ($opportunity->hours <= 100) {
+                $row_class = 'yellow';
+            } else {
+                $row_class = 'red';
+            }
+        }
+        // Display each row
+        echo "<tr class='$row_class'>";
+        echo '<td>' . esc_html($opportunity->position) . '</td>';
+        echo '<td>' . esc_html($opportunity->organization) . '</td>';
+        echo '<td>' . esc_html($opportunity->type) . '</td>';
+        echo '<td>' . esc_html($opportunity->email) . '</td>';
+        echo '<td>' . esc_html($opportunity->description) . '</td>';
+        echo '<td>' . esc_html($opportunity->location) . '</td>';
+        echo '<td>' . intval($opportunity->hours) . '</td>';
+        echo '<td>' . esc_html($opportunity->skills_required) . '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tbody></table>';
+
+    return ob_get_clean();
+}
+
 ?>
