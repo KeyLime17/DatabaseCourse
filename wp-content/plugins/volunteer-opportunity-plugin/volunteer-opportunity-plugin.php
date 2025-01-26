@@ -108,7 +108,7 @@ function volunteer_opportunity_plugin_admin_page() {
     echo '<tr><th>Description</th><td><textarea name="description" required></textarea></td></tr>';
     echo '<tr><th>Location</th><td><input type="text" name="location" required></td></tr>';
     echo '<tr><th>Hours</th><td><input type="number" name="hours" min="1" required></td></tr>';
-    echo '<tr><th>Skills Required</th><td><input type="text" name="skills"></td></tr>';
+    echo '<tr><th>Skills Required</th><td><input type="text" name="skills_required"></td></tr>';
     echo '</table>';
     echo '<input type="submit" class="button button-primary" value="Add Opportunity">';
     echo '</form>';
@@ -117,7 +117,7 @@ function volunteer_opportunity_plugin_admin_page() {
 
     if ($opportunities) {
         echo '<table class="wp-list-table widefat fixed striped">';
-        echo '<thead><tr><th>Position</th><th>Organization</th><th>Type</th><th>Email</th><th>Location</th><th>Hours</th><th>Actions</th></tr></thead><tbody>';
+        echo '<thead><tr><th>Position</th><th>Organization</th><th>Type</th><th>Email</th><th>Location</th><th>Hours</th><th>Skills</th><th>Actions</th></tr></thead><tbody>';
         foreach ($opportunities as $opportunity) {
             echo '<tr>';
             echo '<td>' . esc_html($opportunity->position) . '</td>';
