@@ -84,7 +84,8 @@ function volunteer_opportunity_plugin_admin_page() {
         ]);
     
         // Success message
-        echo '<div class="updated"><p><strong>Volunteer opportunity added!</strong></
+        echo '<div class="updated"><p><strong>Volunteer opportunity added!</strong></p></div>';
+    }
     
 
 // Fetch all opportunities for display
