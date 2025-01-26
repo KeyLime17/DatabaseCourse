@@ -57,28 +57,35 @@ function volunteer_opportunity_plugin_admin_page() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'volunteer_opportunities';
 
-    if ($_POST['action'] == 'add_volunteer') {
+    if (isset($_POST['action']) && $_POST['action'] == 'add_volunteer') {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'volunteer_opportunities';
+    
+        // Sanitize form inputs
         $position = sanitize_text_field($_POST['position']);
         $organization = sanitize_text_field($_POST['organization']);
         $type = sanitize_text_field($_POST['type']);
-        $email = sanitize_text_field($_POST['email']);
+        $email = sanitize_email($_POST['email']);
         $description = sanitize_text_field($_POST['description']);
         $location = sanitize_text_field($_POST['location']);
-        $hours = sanitize_text_field($_POST['hours']);
+        $hours = intval($_POST['hours']); // Sanitize as integer
         $skills_required = sanitize_text_field($_POST['skills_required']);
-
+    
+        // Insert into the database
         $wpdb->insert($table_name, [
-                'position' => $position,
-                'organization' => $organization,
-                'type' => $type,
-                'email' => $email,
-                'description' => $description,
-                'location' => $location,
-                'hours' => $hours,
-                'skills_required' => $skills_required
+            'position' => $position,
+            'organization' => $organization,
+            'type' => $type,
+            'email' => $email,
+            'description' => $description,
+            'location' => $location,
+            'hours' => $hours,
+            'skills_required' => $skills_required,
         ]);
-        echo '<div class"updated"><p><strong>Volunteer opportunity added!</strong></p></div>';
-    }
+    
+        // Success message
+        echo '<div class="updated"><p><strong>Volunteer opportunity added!</strong></
+    
 
 // Fetch all opportunities for display
     $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
@@ -132,10 +139,15 @@ function volunteer_opportunity_plugin_admin_page() {
 
 //Delete opportunity
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    $wpdb->delete($table_name, ['id' => $id]);
-    echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>';
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'volunteer_opportunities';
+
+    $id = intval($_GET['id']); // Ensure the ID is sanitized
+    $wpdb->delete($table_name, ['id' => $id]); // Perform the delete action
+
+    echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>'; // Success message
 }
+
 
 
 //Shortcode
