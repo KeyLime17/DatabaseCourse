@@ -130,4 +130,13 @@ function volunteer_opportunity_plugin_admin_page() {
     echo '</div>';
 }
 
+//Delete opportunity
+if ($_GET['action'] == 'delete' && isset($_GET['id'])) {
+    global $wpdb; 
+    $table_name = $wpdb->prefix . 'volunteer_opportunities'; 
+    $id = intval($_GET['id']); 
+    $wpdb->delete($table_name, ['id' => $id]); 
+    echo '<div class="updated"><p>Volunteer Opportunity Deleted!</p></div>'; 
+}
+
 ?>
