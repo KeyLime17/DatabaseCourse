@@ -57,7 +57,7 @@ function volunteer_opportunity_plugin_admin_page() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'volunteer_opportunities';
 
-    if ($_POST['ACTION'] == 'ADD_VOLUNTEER'0 {
+    if ($_POST['action'] == 'add_volunteer' {
         $position = sanitize_text_field($_POST['position']);
         $organization = sanitize_text_field($_POST['organization']);
         $type = sanitize_text_field($_POST['type']);
